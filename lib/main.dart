@@ -8,6 +8,7 @@ import 'presentation/bloc/task_bloc.dart';
 import 'presentation/bloc/task_event.dart';
 import 'presentation/screens/task_list_screen.dart';
 import 'presentation/screens/add_task_screen.dart';
+import 'presentation/screens/edit_task_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +34,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(primarySwatch: Colors.deepPurple),
         routes: {
           '/add': (context) => const AddTaskScreen(),
+          '/edit': (context) {
+            final task =
+                ModalRoute.of(context)!.settings.arguments as TaskModel;
+            return EditTaskScreen(task: task);
+          },
         },
         home: const TaskListScreen(),
       ),

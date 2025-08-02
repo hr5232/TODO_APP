@@ -18,10 +18,10 @@ class TaskListScreen extends StatelessWidget {
             onSelected: (value) {
               context.read<TaskBloc>().add(FilterTasks(value));
             },
-            itemBuilder: (context) => [
-              const PopupMenuItem(value: 'All', child: Text('All')),
-              const PopupMenuItem(value: 'Active', child: Text('Active')),
-              const PopupMenuItem(value: 'Completed', child: Text('Completed')),
+            itemBuilder: (context) => const [
+              PopupMenuItem(value: 'All', child: Text('All')),
+              PopupMenuItem(value: 'Active', child: Text('Active')),
+              PopupMenuItem(value: 'Completed', child: Text('Completed')),
             ],
           ),
         ],
@@ -32,14 +32,18 @@ class TaskListScreen extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state is TaskLoaded) {
             final tasks = state.tasks;
+
+            if (tasks.isEmpty) {
+              return const Center(child: Text('No tasks found.'));
+            }
+
             return ListView.builder(
               itemCount: tasks.length,
               itemBuilder: (context, index) {
                 final task = tasks[index];
+
                 return ListTile(
-                  title: Text(task.title),
-                  subtitle: Text(task.priority),
-                  trailing: Checkbox(
+                  leading: Checkbox(
                     value: task.isCompleted,
                     onChanged: (_) {
                       context
@@ -47,9 +51,37 @@ class TaskListScreen extends StatelessWidget {
                           .add(ToggleTaskCompletion(task.id));
                     },
                   ),
-                  onLongPress: () {
-                    context.read<TaskBloc>().add(DeleteTask(task.id));
-                  },
+                  title: Text(task.title),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Priority: ${task.priority}'),
+                      if (task.dueDate != null)
+                        Text(
+                            'Due: ${task.dueDate!.toLocal().toString().split(' ')[0]}'),
+                    ],
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit, color: Colors.blue),
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/edit',
+                            arguments: task,
+                          );
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                          context.read<TaskBloc>().add(DeleteTask(task.id));
+                        },
+                      ),
+                    ],
+                  ),
                 );
               },
             );
