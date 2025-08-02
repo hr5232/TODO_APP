@@ -57,3 +57,32 @@ flutter pub run build_runner build
 flutter run
 
 ---
+
+💡 Notable Design Decisions
+* Hive was chosen for fast, lightweight local storage.
+
+* flutter_bloc is used for clean and reactive state management.
+
+* Clean Architecture was applied by separating data, presentation, and (optional) domain logic.
+
+* Tasks include fields like title, description, priority, dueDate, and isCompleted.
+
+* Tasks can be added, edited, deleted, filtered, and sorted by due date.
+
+* UI automatically updates when tasks are added/edited/deleted or completed.
+
+* User-friendly features like:
+
+     - Date picker
+
+     - Priority dropdown
+
+     - Checkboxes for completion
+
+     - Clear filtering with menu options
+
+     - Proper visual feedback (e.g., strikethrough for completed tasks)
+ 
+---
+
+
