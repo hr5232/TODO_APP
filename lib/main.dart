@@ -7,6 +7,7 @@ import 'data/repositories/task_repository.dart';
 import 'presentation/bloc/task_bloc.dart';
 import 'presentation/bloc/task_event.dart';
 import 'presentation/screens/task_list_screen.dart';
+import 'presentation/screens/add_task_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'TODO App',
       theme: ThemeData(primarySwatch: Colors.deepPurple),
+
+      // Define your routes
+      routes: {
+        '/add': (context) => const AddTaskScreen(),
+      },
+
+      // Provide Bloc and set home screen
       home: BlocProvider(
         create: (context) {
           final taskBox = Hive.box<TaskModel>('tasksBox');
