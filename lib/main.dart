@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'data/models/task_model.dart'; // Correct file and name
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'data/models/task_model.dart';
+import 'data/repositories/task_repository.dart';
+import 'presentation/bloc/task_bloc.dart';
+import 'presentation/bloc/task_event.dart';
+import 'presentation/screens/task_list_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,9 +24,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'TODO App',
       theme: ThemeData(primarySwatch: Colors.deepPurple),
-      home: Scaffold(
-        appBar: AppBar(title: Text('TODO App')),
-        body: Center(child: Text('Let\'s build a TODO app!')),
+      home: BlocProvider(
+        create: (context) {
+          final taskBox = Hive.box<TaskModel>('tasksBox');
+          return TaskBloc(TaskRepository(taskBox))..add(LoadTasks());
+        },
+        child: const TaskListScreen(),
       ),
     );
   }
