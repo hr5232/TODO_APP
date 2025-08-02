@@ -24,14 +24,14 @@ A simple but complete TODO mobile application built with **Flutter**, using **Cl
 The project uses **Clean Architecture** to separate layers clearly:
 
 lib/
-├── data/               # Hive models and repositories
-│   └── models/
-│   └── repositories/
-├── domain/             # (Optional) - kept for clean architecture principle
-├── presentation/       
-│   └── bloc/           # TaskBloc, TaskEvents, TaskStates
-│   └── screens/        # AddTask, EditTask, TaskList screens
-└── main.dart
+├── data/ # Handles local storage using Hive
+│ ├── models/ # Task model (TaskModel)
+│ └── repositories/ # TaskRepository for data access logic
+├── domain/ # (Kept empty for future use cases or services)
+├── presentation/
+│ ├── bloc/ # BLoC files: TaskBloc, TaskEvent, TaskState
+│ └── screens/ # UI: AddTask, EditTask, TaskList
+└── main.dart # App entry point and BLoC provider setup
 
 ---
 
