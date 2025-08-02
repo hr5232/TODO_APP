@@ -21,23 +21,20 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'TODO App',
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
+    final taskBox = Hive.box<TaskModel>('tasksBox');
 
-      // Define your routes
-      routes: {
-        '/add': (context) => const AddTaskScreen(),
-      },
+    return BlocProvider(
+      create: (context) => TaskBloc(TaskRepository(taskBox))..add(LoadTasks()),
 
-      // Provide Bloc and set home screen
-      home: BlocProvider(
-        create: (context) {
-          final taskBox = Hive.box<TaskModel>('tasksBox');
-          return TaskBloc(TaskRepository(taskBox))..add(LoadTasks());
+      // ✅ Wraps entire app
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'TODO App',
+        theme: ThemeData(primarySwatch: Colors.deepPurple),
+        routes: {
+          '/add': (context) => const AddTaskScreen(),
         },
-        child: const TaskListScreen(),
+        home: const TaskListScreen(),
       ),
     );
   }
