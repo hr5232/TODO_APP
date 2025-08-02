@@ -15,7 +15,7 @@ class TaskRepository {
   }
 
   Future<void> updateTask(TaskModel task) async {
-    await task.save();
+    await taskBox.put(task.id, task);
   }
 
   Future<void> deleteTask(String id) async {

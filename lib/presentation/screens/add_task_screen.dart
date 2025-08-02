@@ -47,6 +47,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     }
   }
 
+  String get formattedDate {
+    if (_selectedDate == null) return 'Pick Due Date';
+    return 'Due: ${_selectedDate!.toLocal().toString().split(' ')[0]}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,9 +89,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             ElevatedButton.icon(
               onPressed: _pickDate,
               icon: const Icon(Icons.calendar_today),
-              label: Text(_selectedDate == null
-                  ? 'Pick Due Date'
-                  : 'Due: ${_selectedDate!.toLocal()}'.split(' ')[0]),
+              label: Text(formattedDate),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
